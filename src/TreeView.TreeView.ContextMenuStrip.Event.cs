@@ -10,42 +10,62 @@
                 {
                     static public void Register()
                     {
-                        treeviewControl.existingItemToolStripMenuItem.Click += new System.EventHandler(AddExistingItem);
-                        treeviewControl.newFolderToolStripMenuItem.Click += new System.EventHandler(AddNewFolder);
+                        treeviewControl.existingItemToolStripMenuItem.Click += new System.EventHandler(Folder.AddExistingItem);
+                        treeviewControl.newFolderToolStripMenuItem.Click += new System.EventHandler(Folder.AddNewFolder);
+
+                        treeviewControl.openToolStripMenuItem.Click += new System.EventHandler(File.OpenFile);
                     }
 
-                    static private void AddExistingItem(object sender, System.EventArgs e)
+                    static private class Folder
                     {
-                        System.Windows.Forms.OpenFileDialog fileBrowser = new System.Windows.Forms.OpenFileDialog();
-
-                        fileBrowser.Title = "Add file(s)";
-                        fileBrowser.Multiselect = true;
- 
-                        if (fileBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                        static public void AddExistingItem(object sender, System.EventArgs e)
                         {
-                            foreach (string path in fileBrowser.FileNames)
-                            {          
-                                try
-                                {
-                                    System.IO.File.Copy(path, treeviewControl.treeView.SelectedNode.Name + @"\" + System.IO.Path.GetFileName(path), false);
-                                }
-                                catch
-                                {
+                            System.Windows.Forms.OpenFileDialog fileBrowser = new System.Windows.Forms.OpenFileDialog();
 
+                            fileBrowser.Title = "Add file(s)";
+                            fileBrowser.Multiselect = true;
+
+                            if (fileBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            {
+                                foreach (string path in fileBrowser.FileNames)
+                                {
+                                    try
+                                    {
+                                        System.IO.File.Copy(path, treeviewControl.treeView.SelectedNode.Name + @"\" + System.IO.Path.GetFileName(path), false);
+                                    }
+                                    catch
+                                    {
+
+                                    }
                                 }
                             }
                         }
+
+                        static public void AddNewFolder(object sender, System.EventArgs e)
+                        {
+
+                            int i = 1;
+                            while (System.IO.Directory.Exists(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString()))
+                            {
+                                i++;
+                            }
+                            System.IO.Directory.CreateDirectory(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString());
+                        }
                     }
 
-                    static private void AddNewFolder(object sender, System.EventArgs e)
+                    static private class File
                     {
-
-                        int i = 1;
-                        while (System.IO.Directory.Exists(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString()))
+                        static public void OpenFile(object sender, System.EventArgs e)
                         {
-                            i++;
+                            try
+                            {
+                                System.Diagnostics.Process.Start(treeviewControl.treeView.SelectedNode.Name);
+                            }
+                            catch
+                            {
+
+                            }
                         }
-                        System.IO.Directory.CreateDirectory(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString());
                     }
                 }
             }

@@ -42,12 +42,16 @@
 
                 static public void MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
                 {
-                    ((System.Windows.Forms.TreeView)sender).SelectedNode = ((System.Windows.Forms.TreeView)sender).GetNodeAt(e.X, e.Y);
+                    treeviewControl.treeView.SelectedNode = treeviewControl.treeView.GetNodeAt(e.X, e.Y);
                     if (e.Button == System.Windows.Forms.MouseButtons.Right)
                     {
-                        if (!((System.Windows.Forms.TreeView)sender).SelectedNode.ImageKey.Contains("Document"))
+                        if (!treeviewControl.treeView.SelectedNode.ImageKey.Contains("Document"))
                         {
-                            treeviewControl.folderContextMenuStrip.Show((System.Windows.Forms.TreeView)sender, e.X, e.Y);
+                            treeviewControl.folderContextMenuStrip.Show(treeviewControl.treeView, e.X, e.Y);
+                        }
+                        else
+                        {
+                            treeviewControl.fileContextMenuStrip.Show(treeviewControl.treeView, e.X, e.Y);
                         }
                     }
                 }
