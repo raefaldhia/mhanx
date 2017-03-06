@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Mhanxx.treeViewControl treeView;
-            treeView = new Mhanxx.treeViewControl();
+            Mhanxx.TreeViewControl treeView;
+            treeView = new Mhanxx.TreeViewControl();
             this.SuspendLayout();
             // 
             // treeView

@@ -1,12 +1,12 @@
 ﻿namespace Mhanxx
 {
-    public partial class treeViewControl : System.Windows.Forms.UserControl
+    public partial class TreeViewControl : System.Windows.Forms.UserControl
     {
-        public treeViewControl()
+        public TreeViewControl()
         {
             InitializeComponent();
 
-            TreeView.InitializeComponent(this.treeView);
+            TreeView.InitializeComponent(this);
         }
     }
 }

@@ -1,16 +1,19 @@
 ﻿namespace Mhanxx
 {
-    public partial class treeViewControl : System.Windows.Forms.UserControl
+    public partial class TreeViewControl : System.Windows.Forms.UserControl
     {
         static private partial class TreeView
         {
-            static private System.Windows.Forms.TreeView treeView;
+            static private TreeViewControl treeviewControl;
 
-            static public void InitializeComponent(System.Windows.Forms.TreeView _treeView)
+            static public void InitializeComponent(TreeViewControl control)
             {
                 try
                 {
-                    treeView = _treeView;
+                    treeviewControl = control;
+
+                    // ContextMenuStrip initialization
+                    ContextMenuStrip.InitializeComponent();
 
                     // Register event
                     Event.Register();
@@ -21,7 +24,7 @@
 
                     // Create default node for root directory
                     System.Windows.Forms.TreeNode node = new System.Windows.Forms.TreeNode();
-                    treeView.Nodes.Add(node);
+                    treeviewControl.treeView.Nodes.Add(node);
 
                     node.Name = dataDir;
                     node.Text = "Local Server";
@@ -33,7 +36,7 @@
                     node.Expand();
 
                     Populate(node);
-                    treeView.Sort();
+                    treeviewControl.treeView.Sort();
 
                     System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher();
                     watcher.Path = node.Name;

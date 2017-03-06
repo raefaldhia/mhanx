@@ -1,6 +1,6 @@
 ﻿namespace Mhanxx
 {
-    public partial class treeViewControl : System.Windows.Forms.UserControl
+    public partial class TreeViewControl : System.Windows.Forms.UserControl
     {
         static private partial class TreeView
         {
@@ -8,14 +8,15 @@
             {
                 static public void Register()
                 {
-                    treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeCollapse);
-                    treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeExpand);
-                    treeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(Event.MouseDoubleClick);
+                    treeviewControl.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeCollapse);
+                    treeviewControl.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeExpand);
+                    treeviewControl.treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(Event.MouseClick);
+                    treeviewControl.treeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(Event.MouseDoubleClick);
                 }
 
                 static public void BeforeCollapse(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
                 {
-                    if (e.Node == treeView.Nodes[0])
+                    if (e.Node == treeviewControl.treeView.Nodes[0])
                     {
                         e.Cancel = true;
 
@@ -36,6 +37,18 @@
                         e.Node.ImageKey = "localFolder_Open.png";
                         e.Node.SelectedImageKey = "localFolder_Open.png";
                         e.Node.StateImageKey = "localFolder_Open.png";
+                    }
+                }
+
+                static public void MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+                {
+                    ((System.Windows.Forms.TreeView)sender).SelectedNode = ((System.Windows.Forms.TreeView)sender).GetNodeAt(e.X, e.Y);
+                    if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    {
+                        if (!((System.Windows.Forms.TreeView)sender).SelectedNode.ImageKey.Contains("Document"))
+                        {
+                            treeviewControl.folderContextMenuStrip.Show((System.Windows.Forms.TreeView)sender, e.X, e.Y);
+                        }
                     }
                 }
 

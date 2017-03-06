@@ -1,6 +1,6 @@
 ﻿namespace Mhanxx
 {
-    partial class treeViewControl
+    partial class TreeViewControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,11 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(treeViewControl));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TreeViewControl));
             this.treeView = new System.Windows.Forms.TreeView();
             this.treeviewImageList = new System.Windows.Forms.ImageList(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.folderContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.existingItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.folderContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
@@ -62,31 +66,60 @@
             this.treeviewImageList.Images.SetKeyName(3, "localFolder_Open.png");
             this.treeviewImageList.Images.SetKeyName(4, "localDocument.png");
             // 
-            // contextMenuStrip1
+            // folderContextMenuStrip
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.folderContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem});
+            this.folderContextMenuStrip.Name = "contextMenuStrip1";
+            this.folderContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.existingItemToolStripMenuItem,
+            this.newFolderToolStripMenuItem});
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToolStripMenuItem.Text = "Add";
+            // 
+            // existingItemToolStripMenuItem
+            // 
+            this.existingItemToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("existingItemToolStripMenuItem.Image")));
+            this.existingItemToolStripMenuItem.Name = "existingItemToolStripMenuItem";
+            this.existingItemToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.existingItemToolStripMenuItem.Text = "Existing Item...";
+            // 
+            // newFolderToolStripMenuItem
+            // 
+            this.newFolderToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newFolderToolStripMenuItem.Image")));
+            this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
+            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.newFolderToolStripMenuItem.Text = "New Folder";
             // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
             // 
-            // treeViewControl
+            // TreeViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.treeView);
-            this.Name = "treeViewControl";
+            this.Name = "TreeViewControl";
             this.Size = new System.Drawing.Size(278, 235);
+            this.folderContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.ImageList treeviewImageList;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem existingItemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newFolderToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip folderContextMenuStrip;
     }
 }
