@@ -10,18 +10,18 @@
                 {
                     public static void NewDocument(object source, System.IO.FileSystemEventArgs e)
                     {
-                        treeviewControl.treeView.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate {
-                            System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.FullPath);
+                        System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.FullPath);
 
+                        treeviewControl.treeView.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate {
                             if (attr.HasFlag(System.IO.FileAttributes.Directory))
                             {
                                 System.Windows.Forms.TreeNode node = AddFolder(treeviewControl.treeView.Nodes.Find(System.IO.Directory.GetParent(e.FullPath).FullName, true)[0], e.FullPath);
-                                Populate(node);
                             }
                             else
                             {
                                 AddFile(treeviewControl.treeView.Nodes.Find(System.IO.Directory.GetParent(e.FullPath).FullName, true)[0], e.FullPath);
                             }
+                            treeviewControl.treeView.Nodes[0].Expand();
                         });
                     }
 

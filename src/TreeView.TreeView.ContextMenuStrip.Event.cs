@@ -43,7 +43,6 @@
 
                         static public void AddNewFolder(object sender, System.EventArgs e)
                         {
-
                             int i = 1;
                             while (System.IO.Directory.Exists(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString()))
                             {
