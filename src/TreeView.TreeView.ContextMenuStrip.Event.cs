@@ -11,9 +11,14 @@
                     static public void Register()
                     {
                         treeviewControl.existingItemToolStripMenuItem.Click += new System.EventHandler(Folder.AddExistingItem);
-                        treeviewControl.newFolderToolStripMenuItem.Click += new System.EventHandler(Folder.AddNewFolder);
+                        treeviewControl.newFolderToolStripMenuItem.Click += new System.EventHandler(Folder.AddNew);
 
-                        treeviewControl.openToolStripMenuItem.Click += new System.EventHandler(File.OpenFile);
+                        treeviewControl.deleteToolStripMenuItem.Click += new System.EventHandler(Folder.Delete);
+
+
+                        treeviewControl.openToolStripMenuItem.Click += new System.EventHandler(File.Open);
+
+                        treeviewControl.deleteToolStripMenuItem1.Click += new System.EventHandler(File.Delete);
                     }
 
                     static private class Folder
@@ -41,7 +46,7 @@
                             }
                         }
 
-                        static public void AddNewFolder(object sender, System.EventArgs e)
+                        static public void AddNew(object sender, System.EventArgs e)
                         {
                             int i = 1;
                             while (System.IO.Directory.Exists(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString()))
@@ -50,15 +55,39 @@
                             }
                             System.IO.Directory.CreateDirectory(treeviewControl.treeView.SelectedNode.Name + @"\NewFolder" + i.ToString());
                         }
+
+                        static public void Delete(object sender, System.EventArgs e)
+                        {
+                            try
+                            {
+                                System.IO.Directory.Delete(treeviewControl.treeView.SelectedNode.Name, true);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
                     }
 
                     static private class File
                     {
-                        static public void OpenFile(object sender, System.EventArgs e)
+                        static public void Open(object sender, System.EventArgs e)
                         {
                             try
                             {
                                 System.Diagnostics.Process.Start(treeviewControl.treeView.SelectedNode.Name);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+
+                        static public void Delete(object sender, System.EventArgs e)
+                        {
+                            try
+                            {
+                                System.IO.File.Delete(treeviewControl.treeView.SelectedNode.Name);
                             }
                             catch
                             {

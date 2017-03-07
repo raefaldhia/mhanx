@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             Mhanxx.TreeViewControl treeView;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             treeView = new Mhanxx.TreeViewControl();
             this.SuspendLayout();
             // 
@@ -46,6 +47,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(215, 259);
             this.Controls.Add(treeView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "List";
             this.ResumeLayout(false);

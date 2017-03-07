@@ -19,7 +19,7 @@
                     Event.Register();
 
                     // Create src directory as root of directory
-                    string dataDir = System.IO.Directory.GetCurrentDirectory() + @"\src";
+                    string dataDir = System.IO.Directory.GetCurrentDirectory() + @"\Project\Default";
                     System.IO.Directory.CreateDirectory(dataDir);
 
                     // Create default node for root directory
@@ -27,7 +27,7 @@
                     treeviewControl.treeView.Nodes.Add(node);
 
                     node.Name = dataDir;
-                    node.Text = "Local Server";
+                    node.Text = "Default Project";
 
                     node.ImageKey = "root_Local.png";
                     node.SelectedImageKey = "root_Local.png";
