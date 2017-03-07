@@ -6,31 +6,105 @@
         {
             static public class FileSystemWatcher
             {
+                static private System.Collections.Generic.List<string> pool;
+
+                static public void InitializeComponent(string path)
+                {
+                    System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher();
+                    watcher.Path = path;
+
+                    watcher.NotifyFilter = System.IO.NotifyFilters.DirectoryName | System.IO.NotifyFilters.FileName;
+
+                    watcher.Filter = "*";
+                    watcher.IncludeSubdirectories = true;
+
+                    //watcher.Renamed += new System.IO.RenamedEventHandler(FileSystemWatcher.Event.Rename);
+                    watcher.Created += new System.IO.FileSystemEventHandler(FileSystemWatcher.Event.Created);
+                    watcher.Deleted += new System.IO.FileSystemEventHandler(FileSystemWatcher.Event.Deleted);
+
+                    watcher.EnableRaisingEvents = true;
+
+                    pool = new System.Collections.Generic.List<string>();
+                }
                 static public class Event
                 {
-                    public static void NewDocument(object source, System.IO.FileSystemEventArgs e)
-                    {
-                        System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.FullPath);
+                    
+                    static private bool indicate_move = false;
+                    static private System.Timers.Timer timer;
 
-                        treeviewControl.treeView.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate {
-                            System.Windows.Forms.TreeNode node = treeviewControl.treeView.Nodes.Find(System.IO.Directory.GetParent(e.FullPath).FullName, true)[0];
-                            if (attr.HasFlag(System.IO.FileAttributes.Directory))
+                    public static void Created(object source, System.IO.FileSystemEventArgs e)
+                    {
+                        if (indicate_move == true)
+                        {
+                            pool.Add(e.FullPath);
+                            if (timer == null)
                             {
-                                AddFolder(node, e.FullPath);
+                                timer = new System.Timers.Timer(1000);
+                                timer.Elapsed += ProcessQueue;
+                                timer.Start();
                             }
                             else
                             {
-                                AddFile(node, e.FullPath);
+                                timer.Stop();
+                                timer.Start();
                             }
-                            node.Expand();
-                            treeviewControl.treeView.Nodes[0].Expand();
+                        }
+                        else
+                        {
+                            AddToTree(e.FullPath, false);
+                        }
+                    }
+
+                    public static void Deleted(object source, System.IO.FileSystemEventArgs e)
+                    {
+                        System.Windows.Forms.TreeNode node = treeviewControl.treeView.Nodes.Find(e.FullPath, true)[0];
+                        if (node.Nodes.Count != 0)
+                        {
+                            
+                            indicate_move = true;
+                        }
+                        treeviewControl.treeView.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate {
+                            treeviewControl.treeView.Nodes.Remove(node);
                         });
                     }
 
-                    public static void DeleteDocument(object source, System.IO.FileSystemEventArgs e)
+                    private static void ProcessQueue(object sender, System.Timers.ElapsedEventArgs args)
+                    { 
+                        if (timer != null)
+                        {
+                            timer.Stop();
+                            timer.Dispose();
+                            timer = null;
+                        }
+
+                        foreach (string path in pool)
+                        {
+                            AddToTree(path, true);
+                        }
+                        pool.Clear();
+
+                        indicate_move = false;
+                    }
+
+                    private static void AddToTree(string path, bool populate)
                     {
                         treeviewControl.treeView.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate {
-                            treeviewControl.treeView.Nodes.Remove(treeviewControl.treeView.Nodes.Find(e.FullPath, true)[0]);
+                            System.IO.FileAttributes attr = System.IO.File.GetAttributes(path);
+                            System.Windows.Forms.TreeNode node = treeviewControl.treeView.Nodes.Find(System.IO.Directory.GetParent(path).FullName, true)[0];
+                            if (attr.HasFlag(System.IO.FileAttributes.Directory))
+                            {
+                                System.Windows.Forms.TreeNode childnode = AddFolder(node, path);
+                                if (populate == true)
+                                {
+                                    Populate(childnode);
+                                }
+                            }
+                            else
+                            {
+                                AddFile(node, path);
+                            }
+                            node.Expand();
+                            treeviewControl.treeView.Nodes[0].Expand();
                         });
                     }
                 }

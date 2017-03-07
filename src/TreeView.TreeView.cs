@@ -38,17 +38,7 @@
                     Populate(node);
                     treeviewControl.treeView.Sort();
 
-                    System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher();
-                    watcher.Path = node.Name;
-
-                    watcher.NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.DirectoryName;
-                    watcher.Filter = "*";
-                    watcher.IncludeSubdirectories = true;
-
-                    watcher.Created += new System.IO.FileSystemEventHandler(FileSystemWatcher.Event.NewDocument);
-                    watcher.Deleted += new System.IO.FileSystemEventHandler(FileSystemWatcher.Event.DeleteDocument);
-
-                    watcher.EnableRaisingEvents = true;
+                    FileSystemWatcher.InitializeComponent(node.Name);
                 }
                 catch
                 {
