@@ -33,10 +33,9 @@
                     node.SelectedImageKey = "root_Local.png";
                     node.StateImageKey = "root_Local.png";
 
-                    node.Expand();
+                    node.Nodes.Add("");
 
-                    Populate(node);
-                    treeviewControl.treeView.Sort();
+                    node.Expand();
 
                     FileSystemWatcher.InitializeComponent(node.Name);
                 }
@@ -82,9 +81,12 @@
             {
                 foreach (string path in System.IO.Directory.GetDirectories(node.Name))
                 {
-                    Populate(AddFolder(node, path));
+                    System.Windows.Forms.TreeNode childNode = AddFolder(node, path);
+                    if (System.IO.Directory.GetDirectories(path).Length != 0 || System.IO.Directory.GetFiles(path).Length !=0)
+                    {
+                        childNode.Nodes.Add("");
+                    }
                 }
-
                 foreach (string path in System.IO.Directory.GetFiles(node.Name))
                 {
                     AddFile(node, path);

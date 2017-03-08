@@ -8,66 +8,81 @@
             {
                 static public void Register()
                 {
-                    treeviewControl.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeCollapse);
-                    treeviewControl.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(Event.BeforeExpand);
-                    treeviewControl.treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(Event.MouseClick);
-                    treeviewControl.treeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(Event.MouseDoubleClick);
+                    treeviewControl.treeView.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(BeforeSelect);
+                    treeviewControl.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(BeforeCollapse);
+                    treeviewControl.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(BeforeExpand);
+
+                    treeviewControl.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(NodeMouseClick);
+                    treeviewControl.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(NodeMouseDoubleClick);
                 }
 
-                static public void BeforeCollapse(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
+                static private void BeforeSelect(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
                 {
-                    if (e.Node == treeviewControl.treeView.Nodes[0])
+                    if (e.Node.Name == "")
                     {
                         e.Cancel = true;
-
-                        return;
                     }
-                    if (e.Node.ImageKey.Contains("Folder"))
+                }
+
+                static private void NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+                {
+                    treeviewControl.treeView.SelectedNode = e.Node;
+                    
+                    if (e.Button == System.Windows.Forms.MouseButtons.Right)
                     {
-                        e.Node.ImageKey = "localFolder.png";
-                        e.Node.SelectedImageKey = "localFolder.png";
-                        e.Node.StateImageKey = "localFolder.png";
+                        if (!treeviewControl.treeView.SelectedNode.ImageKey.Contains("Document"))
+                        {
+                            treeviewControl.folderContextMenuStrip.Show(treeviewControl.treeView, e.Location);
+                        }
+                        else
+                        {
+                            treeviewControl.fileContextMenuStrip.Show(treeviewControl.treeView, e.Location);
+                        }
+                    }
+                }
+
+                static private void NodeMouseDoubleClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+                {
+                    if (e.Node.ImageKey.Contains("Document"))
+                    {
+                        try
+                        {
+                            System.Diagnostics.Process.Start(e.Node.Name);
+                        }
+                        catch(System.Exception exception)
+                        {
+                            System.Windows.Forms.MessageBox.Show(exception.Message, "List");
+                        }
                     }
                 }
 
                 static public void BeforeExpand(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
                 {
+                    e.Node.Nodes.Clear();           
+                    Populate(e.Node);
+                    
                     if (e.Node.ImageKey.Contains("Folder"))
-                    {
+                    {                        
                         e.Node.ImageKey = "localFolder_Open.png";
                         e.Node.SelectedImageKey = "localFolder_Open.png";
                         e.Node.StateImageKey = "localFolder_Open.png";
                     }
                 }
 
-                static public void MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+                static public void BeforeCollapse(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
                 {
-                    treeviewControl.treeView.SelectedNode = treeviewControl.treeView.GetNodeAt(e.X, e.Y);
-                    if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    e.Node.Nodes.Clear();
+
+                    if (System.IO.Directory.GetDirectories(e.Node.Name).Length != 0 || System.IO.Directory.GetFiles(e.Node.Name).Length != 0)
                     {
-                        if (!treeviewControl.treeView.SelectedNode.ImageKey.Contains("Document"))
-                        {
-                            treeviewControl.folderContextMenuStrip.Show(treeviewControl.treeView, e.X, e.Y);
-                        }
-                        else
-                        {
-                            treeviewControl.fileContextMenuStrip.Show(treeviewControl.treeView, e.X, e.Y);
-                        }
+                        e.Node.Nodes.Add("");
                     }
-                }
-
-                static public void MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
-                {
-                    if (((System.Windows.Forms.TreeView)sender).SelectedNode.ImageKey.Contains("Document"))
+                    
+                    if (e.Node.ImageKey.Contains("Folder"))
                     {
-                        try
-                        {
-                            System.Diagnostics.Process.Start(((System.Windows.Forms.TreeView)sender).SelectedNode.Name);
-                        }
-                        catch
-                        {
-
-                        }
+                        e.Node.ImageKey = "localFolder.png";
+                        e.Node.SelectedImageKey = "localFolder.png";
+                        e.Node.StateImageKey = "localFolder.png";
                     }
                 }
             }
