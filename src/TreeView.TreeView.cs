@@ -11,7 +11,7 @@
                 try
                 {
                     treeviewControl = control;
-
+                    
                     // ContextMenuStrip initialization
                     ContextMenuStrip.InitializeComponent();
 
@@ -38,6 +38,8 @@
                     node.Expand();
 
                     FileSystemWatcher.InitializeComponent(node.Name);
+
+                    treeviewControl.treeView.AllowDrop = true;
                 }
                 catch
                 {

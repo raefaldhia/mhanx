@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Mhanxx.src
+namespace Mhanxx
 {
     partial class About : Form
     {

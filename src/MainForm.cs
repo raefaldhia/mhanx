@@ -6,5 +6,11 @@
         {
             InitializeComponent();
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            var form = new About();
+            form.Show();
+        }
     }
 }

@@ -11,11 +11,10 @@
                     System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher();
                     watcher.Path = path;
 
-                    watcher.NotifyFilter = System.IO.NotifyFilters.FileName | System.IO.NotifyFilters.DirectoryName;
-
                     watcher.Filter = "*";
                     watcher.IncludeSubdirectories = true;
 
+                    watcher.Renamed += new System.IO.RenamedEventHandler(Event.Renamed);
                     watcher.Created += new System.IO.FileSystemEventHandler(Event.Created);
                     watcher.Deleted += new System.IO.FileSystemEventHandler(Event.Deleted);
 
@@ -24,6 +23,44 @@
 
                 static public class Event
                 {
+                    public static void Renamed(object source, System.IO.RenamedEventArgs e)
+                    {
+                        treeviewControl.treeView.Invoke((System.Windows.Forms.MethodInvoker)delegate {
+                            System.Windows.Forms.TreeNode[] node = treeviewControl.treeView.Nodes.Find(e.OldFullPath, true);
+                            if (node.Length != 0)
+                            {
+                                node[0].Name = e.FullPath;
+                                System.IO.FileAttributes attr = System.IO.File.GetAttributes(node[0].Name);
+                                if (attr.HasFlag(System.IO.FileAttributes.Directory))
+                                {
+                                    node[0].Text = System.IO.Path.GetFileName(e.Name);
+                                    if (node[0].IsExpanded)
+                                    {
+                                        Renamed_DoRecursive(node[0], e.OldFullPath);
+                                    }
+                                }
+                                else
+                                {
+                                    node[0].Text = System.IO.Path.GetFileName(e.Name);
+                                }
+                            }
+                        });
+                    }
+
+                    public static void Renamed_DoRecursive(System.Windows.Forms.TreeNode node, string oldPath)
+                    {
+                        foreach (System.Windows.Forms.TreeNode affectedNode in node.Nodes)
+                        {
+                            string affected_path = affectedNode.Name;
+                            affectedNode.Name = affectedNode.Name.Replace(oldPath, node.Name);
+                            System.IO.FileAttributes nodeAttr = System.IO.File.GetAttributes(affectedNode.Name);
+                            if (nodeAttr.HasFlag(System.IO.FileAttributes.Directory) && affectedNode.IsExpanded)
+                            {
+                                Renamed_DoRecursive(affectedNode, affected_path);
+                            }
+                        }
+                    }
+
                     public static void Created(object source, System.IO.FileSystemEventArgs e)
                     {
                         treeviewControl.treeView.Invoke((System.Windows.Forms.MethodInvoker)delegate {
@@ -65,12 +102,17 @@
                                 {
                                     parent[0].Nodes.RemoveByKey(e.FullPath);
                                 }
-                                else
+                                try
                                 {
                                     if (System.IO.Directory.GetDirectories(parent[0].Name).Length == 0 && System.IO.Directory.GetFiles(parent[0].Name).Length == 0)
                                     {
                                         parent[0].Nodes.Clear();
+                                        parent[0].Collapse();
                                     }
+                                }
+                                catch (System.IO.DirectoryNotFoundException)
+                                {
+                                    // Instead check if the file or directory exist, catch it. then does nothing.
                                 }
                             }
                         });
