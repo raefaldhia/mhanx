@@ -1,12 +1,25 @@
-﻿namespace Mhanxx
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Mhanxx.src
 {
-    public partial class TreeViewControl : System.Windows.Forms.UserControl
+    public partial class TreeView : System.Windows.Forms.TreeView
     {
-        public TreeViewControl()
+        public TreeView()
         {
             InitializeComponent();
+        }
 
-            TreeView.InitializeComponent(this);
+        public TreeView(IContainer container)
+        {
+            container.Add(this);
+
+            InitializeComponent();
         }
     }
 }
