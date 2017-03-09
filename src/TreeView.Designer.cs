@@ -1,4 +1,4 @@
-﻿namespace Mhanxx.src
+﻿namespace Mhanxx
 {
     partial class TreeView
     {
@@ -28,9 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TreeView));
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.SuspendLayout();
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "localServer");
+            this.imageList.Images.SetKeyName(1, "remoteServer");
+            this.imageList.Images.SetKeyName(2, "Project");
+            this.imageList.Images.SetKeyName(3, "localFolder");
+            this.imageList.Images.SetKeyName(4, "localFolderOpen");
+            this.imageList.Images.SetKeyName(5, "localDocument");
+            // 
+            // TreeView
+            // 
+            this.LineColor = System.Drawing.Color.Black;
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.ImageList imageList;
     }
 }

@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.treeView = new Mhanxx.src.TreeView(this.components);
+            this.treeView = new Mhanxx.TreeView(this.components);
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -55,8 +55,11 @@
             this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView.ImageIndex = 0;
             this.treeView.Location = new System.Drawing.Point(12, 27);
             this.treeView.Name = "treeView";
+            this.treeView.SelectedImageIndex = 0;
+            this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(260, 209);
             this.treeView.TabIndex = 3;
             // 
@@ -80,6 +83,6 @@
         
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private src.TreeView treeView;
+        private TreeView treeView;
     }
 }
