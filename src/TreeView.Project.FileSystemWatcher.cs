@@ -47,28 +47,45 @@ namespace Mhanxx
                         {
                             if (parent[0].IsExpanded)
                             {
-                                Content content;
-                                System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.FullPath);
-                                if (attr.HasFlag(System.IO.FileAttributes.Directory))
+                                try
                                 {
-                                    content = new Content(Content.Type.Folder, e.FullPath);
-          
-                                    if (System.IO.Directory.EnumerateFileSystemEntries(content.Name).Any())
+                                    Content content;
+                                    System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.FullPath);
+                                    if (attr.HasFlag(System.IO.FileAttributes.Directory))
                                     {
-                                        content.Nodes.Add(@"<\>");
+                                        content = new Content(Content.Type.Folder, e.FullPath);
+
+                                        try
+                                        {
+                                            if (System.IO.Directory.EnumerateFileSystemEntries(content.Name).Any())
+                                            {
+                                                content.Nodes.Add(@"<\>");
+                                            }
+                                        }
+                                        catch (System.IO.IOException)
+                                        {
+                                            // Don't know, try again once?
+                                            if (System.IO.Directory.EnumerateFileSystemEntries(content.Name).Any())
+                                            {
+                                                content.Nodes.Add(@"<\>");
+                                            }
+                                        }
                                     }
+                                    else
+                                    {
+                                        content = new Content(Content.Type.File, e.FullPath);
+                                    }
+                                    parent[0].Nodes.Add(content);
                                 }
-                                else
+                                catch (System.IO.FileNotFoundException)
                                 {
-                                    content = new Content(Content.Type.File, e.FullPath);
+
                                 }
-                                parent[0].Nodes.Add(content);
                             }
                             else
                             {
                                 parent[0].Nodes.Add(@"<\>");
                             }
-                            project.TreeView.Sort();
                         }
                     });
                 }
@@ -82,20 +99,14 @@ namespace Mhanxx
                             if (parent[0].IsExpanded)
                             {
                                 parent[0].Nodes.RemoveByKey(e.FullPath);
-                            }
-                            try
-                            {
-                                if (System.IO.Directory.GetDirectories(parent[0].Name).Length == 0 && System.IO.Directory.GetFiles(parent[0].Name).Length == 0)
+
+                                if (!System.IO.Directory.EnumerateFileSystemEntries(parent[0].Name).Any())
                                 {
                                     parent[0].Nodes.Clear();
                                     parent[0].Collapse();
                                 }
                             }
-                            catch (System.IO.DirectoryNotFoundException)
-                            {
-                                // Instead check if the file or directory exist, catch it. then does nothing.
-                            }
-                            project.TreeView.Sort();
+
                         }
                     }); 
                 }

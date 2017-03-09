@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.treeView = new Mhanxx.TreeView(this.components);
@@ -52,15 +53,16 @@
             // 
             // treeView
             // 
+            this.treeView.AllowDrop = true;
             this.treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView.ImageIndex = 0;
-            this.treeView.Location = new System.Drawing.Point(12, 27);
+            this.treeView.Location = new System.Drawing.Point(13, 28);
             this.treeView.Name = "treeView";
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
-            this.treeView.Size = new System.Drawing.Size(260, 209);
+            this.treeView.Size = new System.Drawing.Size(259, 208);
             this.treeView.TabIndex = 3;
             // 
             // MainForm
@@ -71,6 +73,7 @@
             this.Controls.Add(this.treeView);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "MainForm";

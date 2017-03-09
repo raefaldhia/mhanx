@@ -58,6 +58,11 @@
             }
 
             //
+            //
+            //
+            ContextMenuStrip.Register(this);
+
+            //
             // Watch for project
             //
             FileSystemWatcher watcher = new FileSystemWatcher(node);
