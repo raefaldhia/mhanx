@@ -5,21 +5,25 @@
         static class ContextMenuStrip
         {
             private static TreeView treeView;
+            private static bool RequestIsCopy = false;
+            private static Project.Content clipboard = null;
 
             public static void Register(TreeView view)
             {
                 treeView = view;
 
-                treeView.folderAddExistingItem.Click += Foder.AddExistingItem;
-                treeView.folderAddNewFolder.Click += Foder.AddNewFolder;
-
-                treeView.folderDelete.Click += Foder.Delete;
+                treeView.folderAddExistingItem.Click += Folder.AddExistingItem;
+                treeView.folderAddNewFolder.Click += Folder.AddNewFolder;
+                
+                treeView.folderPaste.Click += Folder.Paste;
+                treeView.folderDelete.Click += Folder.Delete;
                 treeView.folderRename.Click += Rename;
 
                 treeView.OpenFolderinFileExplorer.Click += Open;
 
                 treeView.fileOpen.Click += Open;
 
+                treeView.fileCopy.Click += File.Copy;
                 treeView.fileDelete.Click += File.Delete;
                 treeView.fileRename.Click += Rename;
             }
@@ -51,6 +55,13 @@
 
             static class File
             {
+                public static void Copy(object sender, System.EventArgs e)
+                {
+                    clipboard = (Project.Content)treeView.SelectedNode;
+                    treeView.folderPaste.Enabled = true;
+                    RequestIsCopy = true;
+                }
+
                 public static void Delete(object sender, System.EventArgs e)
                 {
                     try
@@ -68,7 +79,7 @@
                 }
             }
 
-            static class Foder
+            static class Folder
             {
                 public static void AddExistingItem(object sender, System.EventArgs e)
                 {
@@ -101,6 +112,19 @@
                         i++;
                     }
                     System.IO.Directory.CreateDirectory(treeView.SelectedNode.Name + @"\NewFolder" + i.ToString());
+                }
+
+                public static void Paste(object sender, System.EventArgs e)
+                {
+                    string destination = treeView.SelectedNode.Name + @"\" + clipboard.Text;
+                    if (RequestIsCopy)
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    }
+                    else
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    }
                 }
 
                 public static void Delete(object sender, System.EventArgs e)

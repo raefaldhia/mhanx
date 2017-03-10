@@ -35,20 +35,19 @@
             this.folderAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.folderAddExistingItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderAddNewFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.folderCut = new System.Windows.Forms.ToolStripMenuItem();
             this.folderCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.folderPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.folderDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.folderRename = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.OpenFolderinFileExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.fileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.fileOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileCut = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.fileCut = new System.Windows.Forms.ToolStripMenuItem();
             this.fileCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.filePaste = new System.Windows.Forms.ToolStripMenuItem();
             this.fileDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.fileRename = new System.Windows.Forms.ToolStripMenuItem();
             this.folderContextMenuStrip.SuspendLayout();
@@ -104,6 +103,11 @@
             this.folderAddNewFolder.Size = new System.Drawing.Size(150, 22);
             this.folderAddNewFolder.Text = "New Folder";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+            // 
             // folderCut
             // 
             this.folderCut.Image = ((System.Drawing.Image)(resources.GetObject("folderCut.Image")));
@@ -120,15 +124,11 @@
             // 
             // folderPaste
             // 
+            this.folderPaste.Enabled = false;
             this.folderPaste.Image = ((System.Drawing.Image)(resources.GetObject("folderPaste.Image")));
             this.folderPaste.Name = "folderPaste";
             this.folderPaste.Size = new System.Drawing.Size(218, 22);
             this.folderPaste.Text = "Paste";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
             // 
             // folderDelete
             // 
@@ -163,11 +163,10 @@
             this.toolStripSeparator3,
             this.fileCut,
             this.fileCopy,
-            this.filePaste,
             this.fileDelete,
             this.fileRename});
             this.fileContextMenuStrip.Name = "fileContextMenuStrip";
-            this.fileContextMenuStrip.Size = new System.Drawing.Size(118, 142);
+            this.fileContextMenuStrip.Size = new System.Drawing.Size(118, 120);
             // 
             // fileOpen
             // 
@@ -176,6 +175,11 @@
             this.fileOpen.Size = new System.Drawing.Size(117, 22);
             this.fileOpen.Text = "Open";
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(114, 6);
+            // 
             // fileCut
             // 
             this.fileCut.Image = ((System.Drawing.Image)(resources.GetObject("fileCut.Image")));
@@ -183,24 +187,12 @@
             this.fileCut.Size = new System.Drawing.Size(117, 22);
             this.fileCut.Text = "Cut";
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(114, 6);
-            // 
             // fileCopy
             // 
             this.fileCopy.Image = ((System.Drawing.Image)(resources.GetObject("fileCopy.Image")));
             this.fileCopy.Name = "fileCopy";
             this.fileCopy.Size = new System.Drawing.Size(117, 22);
             this.fileCopy.Text = "Copy";
-            // 
-            // filePaste
-            // 
-            this.filePaste.Image = ((System.Drawing.Image)(resources.GetObject("filePaste.Image")));
-            this.filePaste.Name = "filePaste";
-            this.filePaste.Size = new System.Drawing.Size(117, 22);
-            this.filePaste.Text = "Paste";
             // 
             // fileDelete
             // 
@@ -245,7 +237,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem fileCut;
         private System.Windows.Forms.ToolStripMenuItem fileCopy;
-        private System.Windows.Forms.ToolStripMenuItem filePaste;
         private System.Windows.Forms.ToolStripMenuItem fileDelete;
         private System.Windows.Forms.ToolStripMenuItem fileRename;
     }
