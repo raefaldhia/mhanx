@@ -53,6 +53,18 @@ namespace Mhanxx
                     }
                 }
 
+                public  void DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+                {
+                    if (e.Data.GetDataPresent(typeof(Content)))
+                    {
+                        e.Effect = System.Windows.Forms.DragDropEffects.Move;
+                    }
+                    else
+                    {
+                        e.Effect = System.Windows.Forms.DragDropEffects.Copy;
+                    }
+                }
+
                 private Project project;
             }
         }

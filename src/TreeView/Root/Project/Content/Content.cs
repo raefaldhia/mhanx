@@ -64,7 +64,7 @@ namespace Mhanxx
                     }
                 }
 
-                private Type type;
+                public Type type;
                 public Event eventHandler;
 
                 public enum Type { Folder, File };

@@ -15,6 +15,11 @@
 
                 treeView.NodeMouseClick += NodeMouseClick;
 
+                treeView.ItemDrag += ItemDrag;
+                treeView.DragEnter += DragEnter;
+                treeView.DragOver += DragOver;
+                treeView.DragDrop += DragDrop;
+
                 contextmenustripHandler = new ContextMenuStrip(this.treeView);
             }
 
@@ -77,6 +82,93 @@
                 else if (e.Node is Project.Content)
                 {
                     ((Project.Content)e.Node).eventHandler.NodeMouseClick(sender, e);
+                }
+            }
+
+            private void ItemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
+            {
+                treeView.SelectedNode = (System.Windows.Forms.TreeNode)e.Item;
+
+                if (treeView.SelectedNode is Project.Content)
+                {
+                    ((Project.Content)treeView.SelectedNode).eventHandler.ItemDrag(sender, e);
+                }
+            }
+
+            private void DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+            {
+                treeView.Focus();
+
+                if (e.Data.GetDataPresent(typeof(Project.Content)))
+                {
+                    Project.Content source = (Project.Content)e.Data.GetData(typeof(Project.Content));
+                    source.eventHandler.DragEnter(sender, e);
+                }
+                else
+                {
+                    e.Effect = System.Windows.Forms.DragDropEffects.Copy;
+                }
+            }
+
+            private void DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+            {
+                System.Drawing.Point point = treeView.PointToClient(new System.Drawing.Point(e.X, e.Y));
+                System.Windows.Forms.TreeNode target = treeView.GetNodeAt(point);
+
+                if (target != null)
+                {
+                    treeView.SelectedNode = target;
+
+                    if (treeView.SelectedNode is Project)
+                    {
+                        ((Project)treeView.SelectedNode).eventHandler.DragOver(sender, e);
+                    }
+                    else if (treeView.SelectedNode is Project.Content)
+                    {
+                        ((Project.Content)treeView.SelectedNode).eventHandler.DragOver(sender, e);
+                    }
+                    else
+                    {
+                        e.Effect = System.Windows.Forms.DragDropEffects.None;
+                    }
+                }
+            }
+
+            private void DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+            {
+                System.Drawing.Point point = treeView.PointToClient(new System.Drawing.Point(e.X, e.Y));
+                System.Windows.Forms.TreeNode target = treeView.GetNodeAt(point);
+
+                if (e.Data.GetDataPresent(typeof(Project.Content)))
+                {
+                    Project.Content source = (Project.Content)e.Data.GetData(typeof(Project.Content));
+
+                    if (source != target)
+                    {
+                        if (target is Project.Content && ((Project.Content)target).type == Project.Content.Type.File)
+                        {
+                            target = target.Parent;
+                        }
+
+                        string targetPath = target.Name + @"\" + source.Text;
+
+                        if (source.Name != targetPath)
+                        {
+                            if (source.type == Project.Content.Type.File)
+                            {
+                                Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(source.Name, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                            }
+                            else
+                            {
+
+                                Microsoft.VisualBasic.FileIO.FileSystem.MoveDirectory(source.Name, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
                 }
             }
 

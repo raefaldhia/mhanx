@@ -82,6 +82,32 @@ namespace Mhanxx
                             }
                         }
                     }
+
+                    public void ItemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
+                    {
+                        if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                        {
+                            ((Content)e.Item).TreeView.DoDragDrop(e.Item, System.Windows.Forms.DragDropEffects.Move);
+                        }
+                    }
+
+                    public void DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+                    {
+                        e.Effect = System.Windows.Forms.DragDropEffects.Move;
+                    }
+
+                    public void DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+                    {
+                        if (e.Data.GetDataPresent(typeof(Project.Content)))
+                        {
+                            e.Effect = System.Windows.Forms.DragDropEffects.Move;
+                        }
+                        else
+                        {
+                            e.Effect = System.Windows.Forms.DragDropEffects.Copy;
+                        }
+                    }
+
                     private Content content;
                 }
             }
