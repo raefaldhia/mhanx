@@ -44,6 +44,44 @@ namespace Mhanxx
                         }
                     }
 
+                    public void AfterLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
+                    {
+                        try
+                        {
+                            if (content.type == Type.Folder)
+                            { 
+                                Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(e.Node.Name, e.Label);
+                            }
+                            else
+                            {
+                                Microsoft.VisualBasic.FileIO.FileSystem.RenameFile(e.Node.Name, e.Label);
+                            }
+                            e.Node.EndEdit(false);
+                            e.Node.TreeView.LabelEdit = false;
+                        }
+                        catch (System.Exception exception)
+                        {
+                            System.Windows.Forms.MessageBox.Show(exception.Message, "List");
+                            e.CancelEdit = true;
+                            e.Node.BeginEdit();
+                        }
+                    }
+
+                    public void NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+                    {
+                        if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                        {
+                            
+                            if (((Content)e.Node).type == Type.Folder)
+                            {
+                                ((TreeView)e.Node.TreeView).contentFolderContextMenuStrip.Show(e.Node.TreeView, e.Location);
+                            }
+                            else
+                            {
+                                ((TreeView)e.Node.TreeView).contentFileContextMenuStrip.Show(e.Node.TreeView, e.Location);
+                            }
+                        }
+                    }
                     private Content content;
                 }
             }

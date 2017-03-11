@@ -18,7 +18,6 @@ namespace Mhanxx
 
                     this.IncludeSubdirectories = true;
 
-                    // Search workaround for System.IO.FileNotFoundException
                     this.EnableRaisingEvents = true;
                     
                 }

@@ -18,8 +18,10 @@
 
         private void InitializeObject()
         {
-            this.ImageList = this.imageList;
+            this.Name = System.AppDomain.CurrentDomain.BaseDirectory;
 
+            this.ImageList = this.imageList;
+         
             Root localRoot = new Root(Root.Type.Local);
             this.Nodes.Add(localRoot);
 

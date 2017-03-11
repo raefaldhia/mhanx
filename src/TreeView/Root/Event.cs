@@ -23,6 +23,15 @@
                     e.Cancel = true;
                 }
 
+
+                public void NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+                {
+                    if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    {
+                        ((TreeView)e.Node.TreeView).rootContextMenuStrip.Show(e.Node.TreeView, e.Location);
+                    }
+                }
+
                 private Root root;
             }
         }

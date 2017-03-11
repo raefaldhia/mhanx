@@ -47,12 +47,16 @@ namespace Mhanxx
                 Content content;
                 foreach (string path in System.IO.Directory.GetDirectories(this.Name))
                 {
-                    content = new Content(Content.Type.Folder, path);
-                    this.Nodes.Add(content);
-
-                    if (System.IO.Directory.EnumerateFileSystemEntries(path).Any())
+                    if (!path.Contains(".git"))
                     {
-                        content.Nodes.Add(@"<\>");
+                        content = new Content(Content.Type.Folder, path);
+                        this.Nodes.Add(content);
+
+                        if (System.IO.Directory.EnumerateFileSystemEntries(path).Any())
+                        {
+                            content.Nodes.Add(@"<\>");
+                        }
+
                     }
                 }
                 foreach (string path in System.IO.Directory.GetFiles(this.Name))

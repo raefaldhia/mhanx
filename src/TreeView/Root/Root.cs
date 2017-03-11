@@ -27,14 +27,13 @@
                     this.Nodes.Add(@"<\>");
                 }
                 this.Expand();
-
                 eventHandler = new Event(this);
                 filesystemwatcherHandler = new FileSystemWatcher(this, "*");
             }
 
             ~Root()
             {
-                //  eventHandler.Dispose();
+                // eventHandler.Dispose();
                 filesystemwatcherHandler.Dispose();
             }
 

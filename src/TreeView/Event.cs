@@ -10,6 +10,12 @@
 
                 treeView.BeforeExpand += BeforeExpand;
                 treeView.BeforeCollapse += BeforeCollapse;
+
+                treeView.AfterLabelEdit += AfterLabelEdit;
+
+                treeView.NodeMouseClick += NodeMouseClick;
+
+                contextmenustripHandler = new ContextMenuStrip(this.treeView);
             }
 
             private static void BeforeExpand(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
@@ -43,163 +49,160 @@
                     ((Project.Content)e.Node).eventHandler.BeforeCollapse(sender, e);
                 }
             }
+
+            private void AfterLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
+            {
+                if (e.Node is Project)
+                {
+                    ((Project)e.Node).eventHandler.AfterLabelEdit(sender, e);
+                }
+                else if (e.Node is Project.Content)
+                {
+                    ((Project.Content)e.Node).eventHandler.AfterLabelEdit(sender, e);
+                }
+            }
+
+            private void NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+            {
+                treeView.SelectedNode = e.Node;
+
+                if (e.Node is Root)
+                {
+                    ((Root)e.Node).eventHandler.NodeMouseClick(sender, e);
+                }
+                else if (e.Node is Project)
+                {
+                    ((Project)e.Node).eventHandler.NodeMouseClick(sender, e);
+                }
+                else if (e.Node is Project.Content)
+                {
+                    ((Project.Content)e.Node).eventHandler.NodeMouseClick(sender, e);
+                }
+            }
+
             private TreeView treeView;
-        }
-    }
-}
-/*
+            private ContextMenuStrip contextmenustripHandler;
 
-                treeView.NodeMouseClick += TreeView_NodeMouseClick;
-                treeView.NodeMouseDoubleClick += TreeView_NodeMouseDoubleClick;
-                
-                treeView.ItemDrag += ItemDrag;
-                treeView.DragEnter += DragEnter;
-                treeView.DragOver += DragOver;
-                treeView.DragDrop += DragDrop;
-
-                treeView.AfterLabelEdit += AfterLabelEdit;
-
-private static void AfterLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
-{
-    try
-    {
-        System.IO.FileAttributes attr = System.IO.File.GetAttributes(e.Node.Name);
-
-        if (attr.HasFlag(System.IO.FileAttributes.Directory))
-        {
-            Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(e.Node.Name, e.Label);
-        }
-        else
-        {
-            Microsoft.VisualBasic.FileIO.FileSystem.RenameFile(e.Node.Name, e.Label);
-        }
-        e.Node.EndEdit(false);
-        treeView.LabelEdit = false;
-    }
-    catch (System.Exception exception)
-    {
-        System.Windows.Forms.MessageBox.Show(exception.Message, "List");
-        e.CancelEdit = true;
-        e.Node.BeginEdit();
-    }
-}
-
-
-
-private static void TreeView_NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
-{
-    treeView.SelectedNode = e.Node;
-    if (e.Button == System.Windows.Forms.MouseButtons.Right)
-    {
-        if (treeView.SelectedNode.ImageKey.Contains("Folder"))
-        {
-            treeView.folderContextMenuStrip.Show(treeView, e.Location);
-        }
-        else
-        {
-            treeView.fileContextMenuStrip.Show(treeView, e.Location);
-        }
-    }
-}
-
-private static void TreeView_NodeMouseDoubleClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
-{
-    if (e.Node.ImageKey.Contains("Document"))
-    {
-        try
-        {
-            System.Diagnostics.Process.Start(e.Node.Name);
-        }
-        catch (System.Exception exception)
-        {
-            System.Windows.Forms.MessageBox.Show("Couldn't exec: " + exception.Message, "List", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-        }
-    }
-}
-
-private static void ItemDrag(object sender, System.Windows.Forms.ItemDragEventArgs e)
-{
-    treeView.SelectedNode = (System.Windows.Forms.TreeNode)e.Item;
-
-    if (e.Item is Project.Content)
-    {
-        if (e.Button == System.Windows.Forms.MouseButtons.Left)
-        {
-            treeView.DoDragDrop(e.Item, System.Windows.Forms.DragDropEffects.Move);
-        }
-    }
-}
-
-private static void DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
-{
-    treeView.Focus();
-
-    if (e.Data.GetDataPresent(typeof(Project.Content)))
-    {
-        e.Effect = System.Windows.Forms.DragDropEffects.Move;
-    }
-    else
-    {
-        e.Effect = System.Windows.Forms.DragDropEffects.Copy;
-    }
-}
-
-private static void DragOver(object sender, System.Windows.Forms.DragEventArgs e)
-{
-    System.Drawing.Point point = treeView.PointToClient(new System.Drawing.Point(e.X, e.Y));
-    System.Windows.Forms.TreeNode target = treeView.GetNodeAt(point);
-
-    if (target != null)
-    {
-        treeView.SelectedNode = target;
-        if (target.ImageKey.Contains("Server"))
-        {
-            e.Effect = System.Windows.Forms.DragDropEffects.None;
-        }
-        else
-        {
-            if (e.Data.GetDataPresent(typeof(Project.Content)))
+            private class ContextMenuStrip
             {
-                e.Effect = System.Windows.Forms.DragDropEffects.Move;
-            }
-            else
-            {
-                e.Effect = System.Windows.Forms.DragDropEffects.Copy;
-            }
-        }
-    }
-}
-
-private static void DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
-{
-    System.Drawing.Point point = treeView.PointToClient(new System.Drawing.Point(e.X, e.Y));
-    System.Windows.Forms.TreeNode target = treeView.GetNodeAt(point);
-
-    if (e.Data.GetDataPresent(typeof(Project.Content)))
-    {
-        Project.Content source = (Project.Content)e.Data.GetData(typeof(Project.Content));
-        if (source != target)
-        {
-            if (target.ImageKey.Contains("Document"))
-            {
-                target = target.Parent;
-            }
-
-            if (source.Name != target.Name + @"\" + source.Text)
-            {
-                if (source.ImageKey.Contains("Folder"))
+                public ContextMenuStrip(TreeView treeView)
                 {
-                    Microsoft.VisualBasic.FileIO.FileSystem.MoveDirectory(source.Name, target.Name + @"\" + source.Text, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    this.treeView = treeView;
+
+                    treeView.rootAddNewProject.Click += rootAddNewProject;
+
+                    treeView.rootOpenFolderinFileExplorer.Click += OpenFileOrDirectory;
+                    
+
+                    treeView.projectAddExistingItem.Click += AddExistingItem;
+                    treeView.projectAddNewFolder.Click += AddNewFolder;
+
+                    treeView.projectDelete.Click += DeleteDirectory;
+                    treeView.projectRename.Click += Rename;
+
+                    treeView.projectOpenFolderinFileExplorer.Click += OpenFileOrDirectory;
+
+                    treeView.contentFolderAddExistingItem.Click += AddExistingItem;
+                    treeView.contentFolderAddNewFolder.Click += AddNewFolder;
+
+                    treeView.contentFolderDelete.Click += DeleteDirectory;
+                    treeView.contentFolderRename.Click += Rename;
+
+                    treeView.contentFolderOpenFolderinFileExplorer.Click += OpenFileOrDirectory;
+
+                    treeView.contentFileOpen.Click += OpenFileOrDirectory;
+
+                    treeView.contentFileDelete.Click += DeleteFile;
+                    treeView.contentFileRename.Click += Rename;
                 }
-                else
+
+                private void Rename(object sender, System.EventArgs e)
                 {
-                    Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(source.Name, target.Name + @"\" + source.Text, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    treeView.LabelEdit = true;
+                    treeView.SelectedNode.BeginEdit();
                 }
+
+                private void AddExistingItem(object sender, System.EventArgs e)
+                {
+                    System.Windows.Forms.OpenFileDialog fileBrowser = new System.Windows.Forms.OpenFileDialog();
+
+                    fileBrowser.Title = "Add file(s)";
+                    fileBrowser.Multiselect = true;
+
+                    if (fileBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        foreach (string path in fileBrowser.FileNames)
+                        {
+                            try
+                            {
+                                Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(path, treeView.SelectedNode.Name + @"\" + System.IO.Path.GetFileName(path), Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                            }
+                            catch (System.Exception exception)
+                            {
+                                System.Windows.Forms.MessageBox.Show(exception.Message, "List");
+                            }
+                        }
+                    }
+                }
+
+                private void AddNewFolder(object sender, System.EventArgs e)
+                {
+                    int i = 1;
+                    string path = treeView.SelectedNode.Name + @"\NewFolder";
+                    while (System.IO.Directory.Exists(path + i.ToString()))
+                    {
+                        i++;
+                    }
+                    path += i.ToString();
+                    System.IO.Directory.CreateDirectory(path);
+                }
+
+                private void DeleteDirectory(object sender, System.EventArgs e)
+                {
+                    System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show("'" + treeView.SelectedNode.Text + "' will be deleted permanently.", "List", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Warning);
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(treeView.SelectedNode.Name, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    }
+                }
+
+                private void DeleteFile(object sender, System.EventArgs e)
+                {
+                    System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show("'" + treeView.SelectedNode.Text + "' will be deleted permanently.", "List", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Warning);
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(treeView.SelectedNode.Name, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                    }
+                }
+
+                private void OpenFileOrDirectory(object sender, System.EventArgs e)
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(treeView.SelectedNode.Name);
+                    }
+                    catch (System.Exception exception)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Couldn't exec: " + exception.Message, "List", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    }
+                }
+
+                private void rootAddNewProject(object sender, System.EventArgs e)
+                {
+                    int i = 1;
+                    string path = treeView.SelectedNode.Name + @"\NewProject";
+                    while (System.IO.Directory.Exists(path + i.ToString()))
+                    {
+                        i++;
+                    }
+                    path += i.ToString();
+                    System.IO.Directory.CreateDirectory(path);
+
+                    LibGit2Sharp.Repository.Init(path);
+                }
+
+                private TreeView treeView;
             }
         }
     }
-    else
-    {
-
-    }
-}*/
+}

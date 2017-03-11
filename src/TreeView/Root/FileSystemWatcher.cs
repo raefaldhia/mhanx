@@ -26,13 +26,7 @@
                             System.Windows.Forms.TreeNode[] projects = root.Nodes.Find(e.OldFullPath, false);
                             if (projects.Length != 0)
                             {
-                                ((Project)projects[0]).Name = e.FullPath;
-                                ((Project)projects[0]).Text = System.IO.Path.GetFileName(projects[0].Name);
-
-                                if (((Project)projects[0]).IsExpanded)
-                                {
-                                    ((Project)projects[0]).Rename(e.FullPath);
-                                }
+                                ((Project)projects[0]).Rename(e.FullPath);
                             }
                         }
                     });
