@@ -40,8 +40,6 @@
             this.projectAddExistingItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectAddNewFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.projectCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.projectCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.projectDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.projectRename = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,12 +59,11 @@
             this.contentFolderOpenFolderinFileExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.contentFileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contentFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.contentFileCut = new System.Windows.Forms.ToolStripMenuItem();
             this.contentFileCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.contentFilePaste = new System.Windows.Forms.ToolStripMenuItem();
             this.contentFileDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.contentFileRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.rootContextMenuStrip.SuspendLayout();
             this.projectContextMenuStrip.SuspendLayout();
             this.contentFolderContextMenuStrip.SuspendLayout();
@@ -116,15 +113,13 @@
             this.projectContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.projectAdd,
             this.toolStripSeparator1,
-            this.projectCut,
-            this.projectCopy,
             this.projectPaste,
             this.projectDelete,
             this.projectRename,
             this.toolStripSeparator2,
             this.projectOpenFolderinFileExplorer});
             this.projectContextMenuStrip.Name = "projectContextMenuStrip";
-            this.projectContextMenuStrip.Size = new System.Drawing.Size(219, 170);
+            this.projectContextMenuStrip.Size = new System.Drawing.Size(219, 126);
             // 
             // projectAdd
             // 
@@ -153,20 +148,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
-            // 
-            // projectCut
-            // 
-            this.projectCut.Image = ((System.Drawing.Image)(resources.GetObject("projectCut.Image")));
-            this.projectCut.Name = "projectCut";
-            this.projectCut.Size = new System.Drawing.Size(218, 22);
-            this.projectCut.Text = "Cut";
-            // 
-            // projectCopy
-            // 
-            this.projectCopy.Image = ((System.Drawing.Image)(resources.GetObject("projectCopy.Image")));
-            this.projectCopy.Name = "projectCopy";
-            this.projectCopy.Size = new System.Drawing.Size(218, 22);
-            this.projectCopy.Text = "Copy";
             // 
             // projectPaste
             // 
@@ -298,11 +279,10 @@
             this.toolStripSeparator5,
             this.contentFileCut,
             this.contentFileCopy,
-            this.contentFilePaste,
             this.contentFileDelete,
             this.contentFileRename});
             this.contentFileContextMenuStrip.Name = "contentFileContextMenuStrip";
-            this.contentFileContextMenuStrip.Size = new System.Drawing.Size(118, 142);
+            this.contentFileContextMenuStrip.Size = new System.Drawing.Size(118, 120);
             // 
             // contentFileOpen
             // 
@@ -310,6 +290,11 @@
             this.contentFileOpen.Name = "contentFileOpen";
             this.contentFileOpen.Size = new System.Drawing.Size(117, 22);
             this.contentFileOpen.Text = "Open";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(114, 6);
             // 
             // contentFileCut
             // 
@@ -325,13 +310,6 @@
             this.contentFileCopy.Size = new System.Drawing.Size(117, 22);
             this.contentFileCopy.Text = "Copy";
             // 
-            // contentFilePaste
-            // 
-            this.contentFilePaste.Image = ((System.Drawing.Image)(resources.GetObject("contentFilePaste.Image")));
-            this.contentFilePaste.Name = "contentFilePaste";
-            this.contentFilePaste.Size = new System.Drawing.Size(117, 22);
-            this.contentFilePaste.Text = "Paste";
-            // 
             // contentFileDelete
             // 
             this.contentFileDelete.Image = ((System.Drawing.Image)(resources.GetObject("contentFileDelete.Image")));
@@ -345,11 +323,6 @@
             this.contentFileRename.Name = "contentFileRename";
             this.contentFileRename.Size = new System.Drawing.Size(117, 22);
             this.contentFileRename.Text = "Rename";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(114, 6);
             // 
             // TreeView
             // 
@@ -374,8 +347,6 @@
         private System.Windows.Forms.ToolStripMenuItem projectAddNewFolder;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem projectOpenFolderinFileExplorer;
-        private System.Windows.Forms.ToolStripMenuItem projectCut;
-        private System.Windows.Forms.ToolStripMenuItem projectCopy;
         private System.Windows.Forms.ToolStripMenuItem projectPaste;
         private System.Windows.Forms.ToolStripMenuItem projectDelete;
         private System.Windows.Forms.ToolStripMenuItem projectRename;
@@ -396,7 +367,6 @@
         private System.Windows.Forms.ToolStripMenuItem contentFileOpen;
         private System.Windows.Forms.ToolStripMenuItem contentFileCut;
         private System.Windows.Forms.ToolStripMenuItem contentFileCopy;
-        private System.Windows.Forms.ToolStripMenuItem contentFilePaste;
         private System.Windows.Forms.ToolStripMenuItem contentFileDelete;
         private System.Windows.Forms.ToolStripMenuItem contentFileRename;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;

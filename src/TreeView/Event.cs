@@ -181,14 +181,17 @@
                 {
                     this.treeView = treeView;
 
+                    treeView.projectPaste.Enabled = false;
+                    treeView.contentFolderPaste.Enabled = false;
+
                     treeView.rootAddNewProject.Click += rootAddNewProject;
 
                     treeView.rootOpenFolderinFileExplorer.Click += OpenFileOrDirectory;
                     
-
                     treeView.projectAddExistingItem.Click += AddExistingItem;
                     treeView.projectAddNewFolder.Click += AddNewFolder;
 
+                    treeView.projectPaste.Click += Paste;
                     treeView.projectDelete.Click += DeleteDirectory;
                     treeView.projectRename.Click += Rename;
 
@@ -197,6 +200,9 @@
                     treeView.contentFolderAddExistingItem.Click += AddExistingItem;
                     treeView.contentFolderAddNewFolder.Click += AddNewFolder;
 
+                    treeView.contentFolderCut.Click += Cut;
+                    treeView.contentFolderCopy.Click += Copy;
+                    treeView.contentFolderPaste.Click += Paste;
                     treeView.contentFolderDelete.Click += DeleteDirectory;
                     treeView.contentFolderRename.Click += Rename;
 
@@ -204,8 +210,72 @@
 
                     treeView.contentFileOpen.Click += OpenFileOrDirectory;
 
+                    treeView.contentFileCut.Click += Cut;
+                    treeView.contentFileCopy.Click += Copy;
                     treeView.contentFileDelete.Click += DeleteFile;
                     treeView.contentFileRename.Click += Rename;
+                }
+
+                private void Cut(object sender, System.EventArgs e)
+                {
+                    treeView.projectPaste.Enabled = true;
+                    treeView.contentFolderPaste.Enabled = true;
+
+                    clipboardIsCopy = false;
+
+                    clipboard = (Project.Content)treeView.SelectedNode;
+                }
+
+                private void Copy(object sender, System.EventArgs e)
+                {
+                    treeView.projectPaste.Enabled = true;
+                    treeView.contentFolderPaste.Enabled = true;
+
+                    clipboardIsCopy = true;
+
+                    clipboard = (Project.Content)treeView.SelectedNode;
+                }
+
+                private void Paste(object sender, System.EventArgs e)
+                {
+                    if (clipboard != null)
+                    {
+                        try
+                        {
+                            string destination = treeView.SelectedNode.Name + @"\" + clipboard.Text;
+                            if (clipboardIsCopy && (destination != clipboard.Name))
+                            {
+                                if (clipboard.type == Project.Content.Type.File)
+                                {
+                                    Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                }
+                                else
+                                {
+                                    Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                }
+                            }
+                            else if ((destination != clipboard.Name))
+                            {
+                                if (clipboard.type == Project.Content.Type.File)
+                                {
+                                    Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                }
+                                else
+                                {
+                                    Microsoft.VisualBasic.FileIO.FileSystem.MoveDirectory(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                }
+                            }
+                        }
+                        catch (System.IO.DirectoryNotFoundException exception)
+                        {
+                            treeView.projectPaste.Enabled = false;
+                            treeView.contentFolderPaste.Enabled = false;
+
+                            clipboard = null;
+
+                            System.Windows.Forms.MessageBox.Show(exception.Message, "List");
+                        }
+                    }
                 }
 
                 private void Rename(object sender, System.EventArgs e)
@@ -294,6 +364,8 @@
                 }
 
                 private TreeView treeView;
+                private bool clipboardIsCopy = false;
+                private Project.Content clipboard = null;
             }
         }
     }
