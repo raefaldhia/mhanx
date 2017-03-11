@@ -95,9 +95,6 @@
     <Compile Include="src\TreeView\Event.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="src\TreeView\Root\Project\FileSystemWatcher.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="src\TreeView\Root\Project\Project.cs">
       <SubType>Component</SubType>
     </Compile>

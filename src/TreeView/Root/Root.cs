@@ -28,7 +28,7 @@
                 }
                 this.Expand();
                 eventHandler = new Event(this);
-                filesystemwatcherHandler = new FileSystemWatcher(this, "*");
+                filesystemwatcherHandler = new FileSystemWatcher(this);
             }
 
             ~Root()

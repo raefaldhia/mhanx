@@ -33,13 +33,11 @@ namespace Mhanxx
                 this.Expand();
 
                 eventHandler = new Event(this);
-                filesystemwatcherHandler = new FileSystemWatcher(this);
             }
 
             ~Project()
             {
                 // eventHandler.Dispose();
-                filesystemwatcherHandler.Dispose();
             }
 
             public void Populate()
@@ -83,7 +81,6 @@ namespace Mhanxx
             }
 
             public Event eventHandler;
-            private FileSystemWatcher filesystemwatcherHandler;
         }
     }
 }
