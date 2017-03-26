@@ -24,7 +24,6 @@
          
             Root localRoot = new Root(Root.Type.Local);
             this.Nodes.Add(localRoot);
-
             eventHandler = new Event(this);
         }
 

@@ -50,11 +50,11 @@ namespace Mhanxx
                         {
                             if (content.type == Type.Folder)
                             { 
-                                Microsoft.VisualBasic.FileIO.FileSystem.RenameDirectory(e.Node.Name, e.Label);
+                                Util.IO.Directory.Rename(e.Node.Name, e.Label);
                             }
                             else
                             {
-                                Microsoft.VisualBasic.FileIO.FileSystem.RenameFile(e.Node.Name, e.Label);
+                                Util.IO.File.Rename(e.Node.Name, e.Label);
                             }
                             e.Node.EndEdit(false);
                             e.Node.TreeView.LabelEdit = false;

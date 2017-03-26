@@ -50,7 +50,7 @@
             private Type type;
 
             public Event eventHandler;
-            private FileSystemWatcher filesystemwatcherHandler;
+            private FileSystemWatcher filesystemwatcherHandler { get; set; }
         }
     }
 }

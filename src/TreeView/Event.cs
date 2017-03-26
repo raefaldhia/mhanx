@@ -156,12 +156,12 @@
                         {
                             if (source.type == Project.Content.Type.File)
                             {
-                                Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(source.Name, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                Util.IO.File.Move(source.Name, targetPath);
                             }
                             else
                             {
 
-                                Microsoft.VisualBasic.FileIO.FileSystem.MoveDirectory(source.Name, targetPath, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                                Util.IO.Directory.Move(source.Name, targetPath);
                             }
                         }
                     }
@@ -240,40 +240,28 @@
                 {
                     if (clipboard != null)
                     {
-                        try
+                        string destination = treeView.SelectedNode.Name + @"\" + clipboard.Text;
+                        if (clipboard.type == Project.Content.Type.File)
                         {
-                            string destination = treeView.SelectedNode.Name + @"\" + clipboard.Text;
-                            if (clipboardIsCopy && (destination != clipboard.Name))
+                            if (clipboardIsCopy)
                             {
-                                if (clipboard.type == Project.Content.Type.File)
-                                {
-                                    Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                                }
-                                else
-                                {
-                                    Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                                }
+                                Util.IO.File.Copy(clipboard.Name, destination);
                             }
-                            else if ((destination != clipboard.Name))
+                            else
                             {
-                                if (clipboard.type == Project.Content.Type.File)
-                                {
-                                    Microsoft.VisualBasic.FileIO.FileSystem.MoveFile(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                                }
-                                else
-                                {
-                                    Microsoft.VisualBasic.FileIO.FileSystem.MoveDirectory(clipboard.Name, destination, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                                }
+                                Util.IO.File.Move(clipboard.Name, destination);
                             }
                         }
-                        catch (System.IO.DirectoryNotFoundException exception)
+                        else
                         {
-                            treeView.projectPaste.Enabled = false;
-                            treeView.contentFolderPaste.Enabled = false;
-
-                            clipboard = null;
-
-                            System.Windows.Forms.MessageBox.Show(exception.Message, "List");
+                            if (clipboardIsCopy)
+                            {
+                                Util.IO.Directory.Copy(clipboard.Name, destination);
+                            }
+                            else
+                            {
+                                Util.IO.Directory.Move(clipboard.Name, destination);
+                            }
                         }
                     }
                 }
@@ -295,14 +283,7 @@
                     {
                         foreach (string path in fileBrowser.FileNames)
                         {
-                            try
-                            {
-                                Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(path, treeView.SelectedNode.Name + @"\" + System.IO.Path.GetFileName(path), Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                            }
-                            catch (System.Exception exception)
-                            {
-                                System.Windows.Forms.MessageBox.Show(exception.Message, "List");
-                            }
+                            Util.IO.File.Copy(path, treeView.SelectedNode.Name + @"\" + System.IO.Path.GetFileName(path));
                         }
                     }
                 }
@@ -324,7 +305,7 @@
                     System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show("'" + treeView.SelectedNode.Text + "' will be deleted permanently.", "List", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Warning);
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
-                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(treeView.SelectedNode.Name, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                        Util.IO.Directory.Delete(treeView.SelectedNode.Name);
                     }
                 }
 
@@ -333,7 +314,7 @@
                     System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show("'" + treeView.SelectedNode.Text + "' will be deleted permanently.", "List", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Warning);
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
-                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(treeView.SelectedNode.Name, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                        Util.IO.File.Delete(treeView.SelectedNode.Name);
                     }
                 }
 
