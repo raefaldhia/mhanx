@@ -1,9 +1,5 @@
-﻿namespace Mhanxx.Util.IO
+﻿namespace CSMS.Util.IO
 {
-    public class Path
-    {
-
-    }
     public class File
     {
         public static void Move(string sourceFileName, string destinationFileName)
@@ -22,7 +18,7 @@
                 destinationFileName = ResolveDuplicate(destinationFileName);
                 Copy(sourceFileName, destinationFileName);
             }
-       }
+        }
 
         public static void Delete(string file)
         {
@@ -39,7 +35,7 @@
         public static void Rename(string file, string newName)
         {
             try
-            { 
+            {
                 Microsoft.VisualBasic.FileIO.FileSystem.RenameFile(file, newName);
             }
             catch (System.Exception e)
@@ -72,7 +68,7 @@
         public static void Copy(string sourceDirectoryName, string destinationDirectoryName)
         {
             try
-            { 
+            {
                 //stinationDirectoryName = ResolveDuplicate(destinationDirectoryName);
                 Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(sourceDirectoryName, destinationDirectoryName, Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
             }
@@ -95,7 +91,19 @@
             }
             catch (System.IO.IOException)
             {
-                System.Windows.Forms.MessageBox.Show("Cannot move '" + System.IO.Path.GetFileName(destinationDirectoryName) + "'. The destination folder is the same as the source folder.", "List", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.MessageBox.Show("Cannot move '" + System.IO.Path.GetFileName(destinationDirectoryName) + "'. The destination folder is the same as the source folder.", "CSMS", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
+        }
+
+        public static void Create(string directory)
+        {
+            try
+            {
+                Microsoft.VisualBasic.FileIO.FileSystem.CreateDirectory(directory);
+            }
+            catch (System.Exception e)
+            {
+                throw e;
             }
         }
 
